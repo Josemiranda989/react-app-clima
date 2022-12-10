@@ -1,23 +1,37 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
-import { ajax } from "./tools/ajax";
+import { getCountries } from "./services/countries";
+import { getCities } from "./services/cities";
 
 const App = () => {
+  const [countries, setCountries] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      setCountries(await getCountries());
+    })();
+  }, []);
+
+  const countryHandler = async (e) => {
+    setCities(await getCities(e.currentTarget.value));
+  };
+
   return (
     <div>
       <label> Elije un país</label>
-      <select name="">
-        <option value="" key=""></option>
-        <option value="" key=""></option>
-        <option value="" key=""></option>
-        <option value="" key=""></option>
-        <option value="" key=""></option>
-        <option value="" key=""></option>
+      <select onChange={countryHandler} name="">
+        {countries.map((country) => {
+          return (
+            <option key={country.cca2} value={country.cca2}>
+              {country.name.common}
+            </option>
+          );
+        })}
       </select>
     </div>
   );
 };
-
 export default App;
 
 /* Rest countries

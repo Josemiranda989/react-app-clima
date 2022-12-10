@@ -1,3 +1,4 @@
 import axios from 'axios';
 
-export const ajax = async () => await axios.request().then(response => response.data);
+export const ajax = async (options) =>
+  await axios.request(options).then((response) => response.data);
