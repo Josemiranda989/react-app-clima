@@ -10,14 +10,20 @@ const App = () => {
   const [cities, setCities] = useState([]);
   const [weather, setWeather] = useState(null);
 
+
   useEffect(() => {
     (async () => {
       setCountries(await getCountries());
     })();
   }, []);
 
-  const countryHandler = async (e) => e.currentTarget.value && setCities(await getCities(e.currentTarget.value));
-  const cityHandler = async (e) => e.currentTarget.value && setWeather(await getCityWeather(e.currentTarget.value));
+  const countryHandler = async (e) => {
+    e.currentTarget.value && setCities(await getCities(e.currentTarget.value));
+    setWeather(null)
+  }
+  const cityHandler = async (e) => {
+    e.currentTarget.value && setWeather(await getCityWeather(e.currentTarget.value));
+  }
 
   console.log(weather);
 
@@ -49,6 +55,20 @@ const App = () => {
               </option>
             ))}
           </select>
+        </div>
+      )}
+
+      <br />
+
+      {weather && (
+        <div>
+          <h2>Temperatura actual: {weather.main.temp}°</h2>
+          <p>min: {weather.main.temp_min.toFixed()}°</p>
+          <p>max: {weather.main.temp_max.toFixed()}°</p>
+          <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt="weather icon" />
+          <pre>
+          {JSON.stringify(weather, null, 2)}
+          </pre>
         </div>
       )}
     </>
